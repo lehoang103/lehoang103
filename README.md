@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @lehoang103
-- 👀 I’m interested in machine learning and computer vision
-- 🌱 I’m currently learning Python | Kotlin
+- 👀 Machine learning and computer vision
+- 🌱 Python | Kotlin
 - 💞️ I’m looking to collaborate on other content github
 -
 
