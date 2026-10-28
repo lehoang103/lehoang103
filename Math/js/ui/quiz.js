@@ -70,9 +70,10 @@
         : q.input ? `${widgetHTML(q)}<div class="ans-row"><input class="ans" type="hidden">${!opts.exam ? '<button class="btn check">Kiểm tra</button>' : ''}</div>`
         : `<div class="ans-row"><input class="ans" type="text" inputmode="${isFrac ? 'text' : 'decimal'}" autocomplete="off" placeholder="${isFrac ? 'Nhập dạng a/b' : 'Nhập đáp số'}" aria-label="Đáp số">${q.unit ? `<span class="unit">${q.unit}</span>` : ''}${!opts.exam ? '<button class="btn check">Kiểm tra</button>' : ''}</div>
            ${kid && !isFrac ? `<div class="kp">${[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map(d => `<button type="button" data-k="${d}">${d}</button>`).join('')}<button type="button" data-k="del" aria-label="Xóa">⌫</button></div>` : `<div class="muted small">${isFrac ? 'Viết phân số tối giản, ví dụ 3/4 hoặc −2/5' : (MA.User.current && MA.User.current.grade >= 4 ? 'Số thập phân có thể dùng dấu phẩy, ví dụ 2,5' : '')}</div>`}`}
-      ${!opts.exam ? `<div class="q-help"><button class="btn ghost small" data-act="hint">💡 Gợi ý</button><button class="btn ghost small" data-act="show">👀 Xem lời giải</button></div><div class="hint-box"></div>` : ''}
+      ${!opts.exam ? `<div class="q-help"><button class="btn ghost small" data-act="helpToggle" aria-expanded="false">🆘 Trợ giúp</button><span class="help-opts" hidden><button class="btn ghost small" data-act="hint">💡 Gợi ý</button><button class="btn ghost small" data-act="show">👀 Xem lời giải</button></span></div><div class="hint-box"></div>` : ''}
       <div class="feedback"></div></div>`;
     const card = $('.qcard', el);
+    const hT = $('[data-act=helpToggle]', card); if (hT) hT.onclick = () => { const o = $('.help-opts', card); o.hidden = !o.hidden; hT.setAttribute('aria-expanded', String(!o.hidden)); };
     let widget = null;
     $$('.kp button', card).forEach(b => b.onclick = () => { if (card.classList.contains('answered')) return; const inp = $('.ans', card); inp.value = b.dataset.k === 'del' ? inp.value.slice(0, -1) : (inp.value + b.dataset.k).slice(0, 7); inp.dispatchEvent(new Event('input')); MA.Sound.click(); });
     if (q.input) widget = bindWidget(card, q, st.value, (v) => { $('.ans', card).value = v; if (opts.exam && opts.onPick) opts.onPick(v); });
@@ -153,8 +154,8 @@
 
     app.innerHTML = `<div class="quiz">
       <div class="quiz-head"><div><small>${cfg.kicker || ''}</small><h2>${cfg.title}</h2></div>
-        <div class="qh-stats">${exam ? `<span class="timer" id="qTimer">⏱ --:--</span>` : `<span id="qCombo" class="combo">🔥 0</span><span id="qXp" class="xp">+0 XP</span>${cfg.speed ? '<span class="timer" id="qTimer">⏱ 30</span>' : ''}`}
-        ${UI.focus.button()}<button class="btn ghost small" id="qQuit">✕ Thoát</button></div></div>
+        <div class="qh-stats">${exam ? `<span class="timer" id="qTimer">⏱ --:--</span>` : `<span id="qCombo" class="combo" ${UI.settings.full ? '' : 'hidden'}>🔥 0</span><span id="qXp" class="xp" ${UI.settings.full ? '' : 'hidden'}>+0 XP</span>${cfg.speed ? '<span class="timer" id="qTimer">⏱ 30</span>' : ''}`}
+        <details class="qh-more"><summary class="btn ghost small" aria-label="Thêm tuỳ chọn">⋯</summary><div class="qh-menu">${UI.focus.button()}</div></details><button class="btn ghost small" id="qQuit">✕ Thoát</button></div></div>
       <div class="progress"><i id="qProg"></i></div>
       ${exam ? '<div class="navgrid" id="qNav"></div>' : ''}
       <div id="qBox"></div>
@@ -177,7 +178,7 @@
           const fast = cfg.speed && m.sec < 12;
           const g = MA.User.record(q, correct, { hint: m.hint, fast, sec: m.sec, value: m.value, combo: S.combo, fromMistakes: cfg.kind === 'mistakes' || !!q.fromMistake });
           S.xp += g; S.res.push({ q, correct, value: m.value, hint: m.hint });
-          $('#qCombo', app).textContent = '🔥 ' + S.combo; $('#qXp', app).textContent = '+' + S.xp + ' XP';
+          $('#qCombo', app).textContent = '🔥 ' + S.combo; $('#qCombo', app).hidden = !UI.settings.full && S.combo < 3; $('#qXp', app).textContent = '+' + S.xp + ' XP';
           if (S.combo && S.combo % 5 === 0) UI.toast(`🔥 Combo ${S.combo} câu đúng liên tiếp! +5 XP thưởng`, 'good');
           prog(); return g;
         },
@@ -243,16 +244,16 @@
           <div class="res-score"><b>${String(score).replace('.', ',')}</b><small>/ 10 điểm</small></div></div>
         <div class="res-stats"><div><b>${right}/${n}</b><small>câu đúng</small></div><div><b>${UI.fmtTime(sec)}</b><small>thời gian</small></div><div><b>+${S.xp}</b><small>XP${bonus ? ` (gồm +${bonus} thưởng)` : ''}</small></div><div><b>${MA.User.rankOf(MA.User.gradeXp()).icon} ${MA.User.gradeXp()}</b><small>XP ${MA.Data.grade(MA.User.current.grade).name}</small></div></div>
         ${fin.html || ''}
-        ${weakT.length ? `<div class="card soft"><h3>🔁 Nên ôn lại</h3><div class="btn-row">${weakT.map(t => `<button class="btn ghost" data-peek="${t.id}">${t.icon} ${t.title} (${weak[t.id]} câu sai)</button>`).join('')}</div></div>` : ''}
+        ${weakT.length ? `<div class="card soft"><h3>🔁 Nên ôn lại</h3><div class="btn-row">${weakT.slice(0, 3).map(t => `<button class="btn ghost" data-peek="${t.id}">${t.icon} ${t.title} (${weak[t.id]} câu sai)</button>`).join('')}</div></div>` : ''}
         <div class="btn-row center">
           <button class="btn big" id="rAgain">🔄 Làm bộ khác</button>
-          ${S.res.some(r => !r.correct) ? '<a class="btn big ghost" href="#/review/mistakes">📒 Sửa lỗi sai</a><button class="btn big ghost" id="rFlagAll">🚩 Gắn cờ tất cả câu sai</button>' : ''}
-          <a class="btn big ghost" href="#/review/flags">🚩 Cờ của con</a>
-          ${score >= 8 && n >= 10 ? '<button class="btn big ghost" id="rCert">🎖️ In giấy khen</button>' : ''}
-          <a class="btn big ghost" href="#/home">🏠 Trang chủ</a></div>
-        <h2>Xem lại bài làm</h2>
-        <div class="review-list">${S.res.map((r, i) => `<details class="rv ${r.correct ? 'ok' : 'no'}"><summary><span class="rv-mark">${r.correct ? '✔' : '✘'}</span><span class="rv-q">Câu ${i + 1}: ${r.q.text}</span></summary>
-          <div class="rv-body">${MA.Vis.render(r.q.visual)}<p>Con trả lời: <b>${r.value == null || r.value === '' || r.value === '\u0000' ? '(bỏ trống / xem lời giải)' : r.q.type === 'mc' ? (r.q.options[+r.value] || '') : esc(r.value)}</b></p>${solutionHTML(r.q, !r.correct)}<button class="btn small ghost flag-tg" data-fl="${i}"></button></div></details>`).join('')}</div></div>`;
+          ${S.res.some(r => !r.correct) ? '<a class="btn big ghost" href="#/review/mistakes">📒 Sửa lỗi sai</a>' : '<a class="btn big ghost" href="#/home">🏠 Trang chủ</a>'}</div>
+        <details class="res-more"><summary>Thêm tuỳ chọn</summary><div class="btn-row center">
+          ${S.res.some(r => !r.correct) ? '<button class="btn ghost" id="rFlagAll">🚩 Gắn cờ tất cả câu sai</button><a class="btn ghost" href="#/home">🏠 Trang chủ</a>' : ''}
+          <a class="btn ghost" href="#/review/flags">🚩 Cờ của con</a>
+          ${score >= 8 && n >= 10 ? '<button class="btn ghost" id="rCert">🎖️ In giấy khen</button>' : ''}</div></details>
+        <details class="rv-all" ${S.res.some(r => !r.correct) ? 'open' : ''}><summary><b>Xem lại bài làm</b> · ${S.res.filter(r => !r.correct).length} câu sai</summary><div class="review-list">${S.res.map((r, i) => `<details class="rv ${r.correct ? 'ok' : 'no'}"><summary><span class="rv-mark">${r.correct ? '✔' : '✘'}</span><span class="rv-q">Câu ${i + 1}: ${r.q.text}</span></summary>
+          <div class="rv-body">${MA.Vis.render(r.q.visual)}<p>Con trả lời: <b>${r.value == null || r.value === '' || r.value === '\u0000' ? '(bỏ trống / xem lời giải)' : r.q.type === 'mc' ? (r.q.options[+r.value] || '') : esc(r.value)}</b></p>${solutionHTML(r.q, !r.correct)}<button class="btn small ghost flag-tg" data-fl="${i}"></button></div></details>`).join('')}</div></details></div>`;
       $$('[data-peek]', app).forEach(b => b.onclick = () => UI.lessonPeek(b.dataset.peek));
       $('#rAgain', app).onclick = () => cfg.restart ? cfg.restart() : UI.route();
       // gắn cờ ở màn kết quả (từng câu hoặc tất cả câu sai)

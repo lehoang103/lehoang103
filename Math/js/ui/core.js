@@ -23,9 +23,13 @@ window.TV_BUILD = 27;   // phiên bản – đổi bằng tools/doi-phien-ban.js
     { id: 'vip', icon: '👑', label: 'VIP' }
   ];
 
+  // Mục chính hiện sẵn; các mục còn lại nằm trong menu "Thêm"
+  const MAIN = ['home', 'learn', 'practice', 'review'];
+  const MORE = ['exam', 'timo', 'rank', 'vip'];
+
   const UI = {
     NAV,
-    settings: Object.assign({ sound: true, font: 1, theme: 'auto', warmup: true, typed: true, voice: '', voiceRate: 1 }, MA.Store.get('settings', {})),
+    settings: Object.assign({ sound: true, font: 1, theme: 'auto', warmup: true, typed: true, voice: '', voiceRate: 1, full: false }, MA.Store.get('settings', {})),
     // Đã bỏ tự đọc đề: cô chỉ đọc khi người học bấm nút 🔊 (giữ hàm để tương thích)
     autoRead() { return false; },
     saveSettings() { MA.Store.set('settings', this.settings); this.applySettings(); },
@@ -68,6 +72,7 @@ window.TV_BUILD = 27;   // phiên bản – đổi bằng tools/doi-phien-ban.js
 
     // ---------- Header & điều hướng ----------
     renderAdminHeader() {
+      document.body.dataset.view = 'admin';
       const s = MA.Account.adminSession();
       $('#topbar').innerHTML = `<div class="tb-inner"><a class="logo" href="#/admin"><img src="assets/mascot.jpg" alt=""><span>Toán Vui <b>Admin</b></span></a>
         <span class="admin-chip">🛠️ Bảng quản trị</span>
@@ -76,24 +81,29 @@ window.TV_BUILD = 27;   // phiên bản – đổi bằng tools/doi-phien-ban.js
       $('#admOut').onclick = () => { MA.Account.adminLogout(); this.toast('Đã đăng xuất quản trị.'); this.go(MA.User.current ? 'home' : 'login'); };
     },
     renderHeader(active) {
+      document.body.dataset.view = active || 'login';
       const u = MA.User.current; const h = $('#topbar'); const bn = $('#bottomnav');
       if (!u) { h.innerHTML = `<div class="tb-inner"><a class="logo" href="#/login"><img src="assets/mascot.jpg" alt=""><span>Toán Vui <b>1–6</b></span></a></div>`; bn.innerHTML = ''; return; }
       const g = MA.Data.grade(u.grade) || { name: 'Lớp ' + u.grade };
       const xp = MA.User.gradeXp(); const rk = MA.User.rankOf(xp);
+      const vip = MA.Account.isVip();
+      const moreIds = MORE.filter(id => !(id === 'vip' && vip));
+      const moreOn = moreIds.includes(active) || active === 'week';
+      const item = (n, bottom) => `<a href="#/${n.id}" class="${active === n.id ? 'on' : ''}">${bottom ? `<span>${n.icon}</span>${n.label}` : `${n.icon} ${n.label}`}</a>`;
+      const core = NAV.filter(n => MAIN.includes(n.id));
       h.innerHTML = `<div class="tb-inner">
         <a class="logo" href="#/home"><img src="assets/mascot.jpg" alt=""><span>Toán Vui <b>1–6</b></span></a>
         <button class="grade-chip" id="gradeBtn" title="Đổi lớp" style="--gc:${g.color || '#888'}">${g.emoji || '📘'} ${g.name} ▾</button>
-        <nav class="topnav">${NAV.filter(n => n.id !== 'worksheet' && !(n.id === 'vip' && MA.Account.isVip())).map(n => `<a href="#/${n.id}" class="${active === n.id ? 'on' : ''}">${n.icon} ${n.label}</a>`).join('')}</nav>
+        <nav class="topnav">${core.map(n => item(n)).join('')}<button class="more-btn ${moreOn ? 'on' : ''}" id="moreBtn">⋯ Thêm</button></nav>
         <div class="tb-right">
-          ${MA.Sync && MA.Sync.supported ? `<button class="icon-btn sync-dot" id="syncDot" data-s="${MA.Sync.status}" title="Đồng bộ máy chủ">☁️</button>` : ''}
-          <button class="icon-btn" id="padBtn" title="Bảng nháp">✍️</button>
+          ${MA.Sync && MA.Sync.supported ? `<button class="icon-btn sync-dot" id="syncDot" data-s="${MA.Sync.status}" title="Đồng bộ máy chủ" hidden>☁️</button>` : ''}
           <a class="rank-pill" href="#/rank" title="Hạng ${rk.name} – ${xp} XP" style="--rc:${rk.color}">${rk.icon}<span>${xp} XP</span></a>
-          ${MA.Account.isVip() ? '<a class="vip-pill" href="#/rank/me" title="Tài khoản VIP">👑 VIP</a>' : ''}
+          ${vip ? '<a class="vip-pill" href="#/rank/me" title="Tài khoản VIP">👑 VIP</a>' : ''}
           <button class="avatar-btn" id="userBtn" title="${esc(u.name)}">${MA.U.av(u.avatar)}<span>${esc(u.name)}</span></button>
         </div></div>`;
-      bn.innerHTML = NAV.filter(n => !['worksheet', 'rank', 'timo'].includes(n.id)).map(n => `<a href="#/${n.id}" class="${active === n.id ? 'on' : ''}"><span>${n.icon}</span>${n.label}</a>`).join('');
+      bn.innerHTML = core.map(n => item(n, true)).join('') + `<button class="more-btn ${moreOn ? 'on' : ''}" id="moreBtn2"><span>⋯</span>Thêm</button>`;
       $('#gradeBtn').onclick = () => this.pickGrade();
-      $('#padBtn').onclick = () => MA.Scratchpad.toggle();
+      $$('#moreBtn, #moreBtn2').forEach(b => b.onclick = () => this.moreMenu());
       if ($('#syncDot')) { this.syncDot(); $('#syncDot').onclick = () => this.syncInfo(); }
       $('#userBtn').onclick = () => this.userMenu();
     },
@@ -130,7 +140,7 @@ window.TV_BUILD = 27;   // phiên bản – đổi bằng tools/doi-phien-ban.js
       const d = $('#syncDot'); if (!d || !MA.Sync) return; const s = MA.Sync.status;
       const acc = MA.Account.current(); const local = acc && !MA.Sync.syncable(acc);
       const t = local ? 'Hồ sơ chỉ lưu trên máy này (chưa có SĐT cha/mẹ)' : { ok: 'Đã đồng bộ với máy chủ', sync: 'Đang đồng bộ…', offline: 'Mất kết nối máy chủ — dữ liệu vẫn lưu trên máy, sẽ tự gửi khi có mạng', error: 'Lỗi đồng bộ', auth: 'Cần đăng nhập lại bằng mật khẩu VIP để đồng bộ', idle: 'Đồng bộ máy chủ' }[s] || '';
-      d.dataset.s = local ? 'local' : s; d.title = t; d.textContent = local ? '💾' : s === 'offline' || s === 'error' ? '⚠️' : s === 'auth' ? '🔑' : s === 'sync' ? '⏳' : '☁️';
+      d.hidden = !local && s === 'ok'; d.dataset.s = local ? 'local' : s; d.title = t; d.textContent = local ? '💾' : s === 'offline' || s === 'error' ? '⚠️' : s === 'auth' ? '🔑' : s === 'sync' ? '⏳' : '☁️';
     },
     syncInfo() {
       const i = MA.Sync.info(); const acc = MA.Account.current(); const local = acc && !MA.Sync.syncable(acc);
@@ -142,6 +152,12 @@ window.TV_BUILD = 27;   // phiên bản – đổi bằng tools/doi-phien-ban.js
         $$('[data-x]', b).forEach(x => x.onclick = () => close());
         if ($('#snNow', b)) $('#snNow', b).onclick = async () => { $('#snNow', b).disabled = true; await MA.Sync.now(); close(); this.toast(MA.Sync.status === 'ok' ? '☁️ Đã đồng bộ' : '⚠️ Chưa kết nối được máy chủ', MA.Sync.status === 'ok' ? 'good' : 'bad'); };
       });
+    },
+    moreMenu() {
+      const vip = MA.Account.isVip();
+      const items = [...MORE.filter(id => !(id === 'vip' && vip)).map(id => NAV.find(n => n.id === id)), NAV.find(n => n.id === 'worksheet'), { id: 'week', icon: '📊', label: 'Báo cáo tuần' }];
+      this.modal(`<h2>⋯ Thêm</h2><div class="more-grid">${items.map(n => `<a class="more-item" href="#/${n.id}"><span>${n.icon}</span><b>${n.label}</b></a>`).join('')}</div>`,
+        (box, close) => $$('a', box).forEach(a => a.addEventListener('click', close)));
     },
     pickGrade() {
       const u = MA.User.current;
@@ -242,19 +258,22 @@ window.TV_BUILD = 27;   // phiên bản – đổi bằng tools/doi-phien-ban.js
           <label class="set-row"><span>🔊 Âm thanh</span><input type="checkbox" id="setSound" ${s.sound ? 'checked' : ''}></label>
           <label class="set-row"><span>🔁 Khởi động bằng câu ôn bài cũ</span><input type="checkbox" id="setWarm" ${s.warmup ? 'checked' : ''}></label>
           <label class="set-row"><span>⌨️ Tự nhập đáp số (bớt trắc nghiệm)</span><input type="checkbox" id="setTyped" ${s.typed !== false ? 'checked' : ''}></label>
+          <label class="set-row"><span>🧩 Hiện đầy đủ thông tin (tắt = giao diện gọn)</span><input type="checkbox" id="setFull" ${s.full ? 'checked' : ''}></label>
           <div class="set-row voice-row"><span>🗣️ Giọng cô đọc</span><div id="setVoice"></div></div>
           <div class="set-row"><span>🔠 Cỡ chữ</span><div class="seg">${['Nhỏ', 'Vừa', 'Lớn', 'Rất lớn'].map((t, i) => `<button data-f="${i}" class="${s.font === i ? 'on' : ''}">${t}</button>`).join('')}</div></div>
           <div class="set-row"><span>🌗 Giao diện</span><div class="seg">${[['auto', 'Tự động'], ['light', 'Sáng'], ['dark', 'Tối']].map(([k, t]) => `<button data-t="${k}" class="${s.theme === k ? 'on' : ''}">${t}</button>`).join('')}</div></div>
         </div>
-        <div class="btn-row"><a class="btn ghost" href="#/rank/me">👤 Hồ sơ & huy hiệu</a><a class="btn ghost" href="#/worksheet">🖨️ Phiếu in</a><a class="btn ghost" href="#/week">📨 Báo cáo tuần</a><a class="btn ghost" href="huong-dan.html">📖 Hướng dẫn</a>${MA.PWA && MA.PWA.canInstall() ? '<button class="btn ghost" id="pwaGo">📲 Cài ứng dụng</button>' : ''}<button class="btn ghost" id="swUser">🔄 Đổi người học</button></div>`,
+        <div class="btn-row"><a class="btn ghost" href="#/rank/me">👤 Hồ sơ & huy hiệu</a><a class="btn ghost" href="#/worksheet">🖨️ Phiếu in</a><a class="btn ghost" href="#/week">📨 Báo cáo tuần</a><a class="btn ghost" href="huong-dan.html">📖 Hướng dẫn</a>${MA.Sync && MA.Sync.supported ? '<button class="btn ghost" id="umSync">☁️ Đồng bộ</button>' : ''}${MA.PWA && MA.PWA.canInstall() ? '<button class="btn ghost" id="pwaGo">📲 Cài ứng dụng</button>' : ''}<button class="btn ghost" id="swUser">🔄 Đổi người học</button></div>`,
         (box, close) => {
           $('#setSound', box).onchange = (e) => { s.sound = e.target.checked; this.saveSettings(); };
           $('#setWarm', box).onchange = (e) => { s.warmup = e.target.checked; this.saveSettings(); };
+          $('#setFull', box).onchange = (e) => { s.full = e.target.checked; this.saveSettings(); this.toast(s.full ? 'Đã bật giao diện đầy đủ' : 'Đã bật giao diện gọn'); this.route(); };
           $('#setTyped', box).onchange = (e) => { s.typed = e.target.checked; this.saveSettings(); };
           this.voicePicker($('#setVoice', box));
           $$('[data-f]', box).forEach(b => b.onclick = () => { s.font = +b.dataset.f; this.saveSettings(); $$('[data-f]', box).forEach(x => x.classList.toggle('on', x === b)); });
           $$('[data-t]', box).forEach(b => b.onclick = () => { s.theme = b.dataset.t; this.saveSettings(); $$('[data-t]', box).forEach(x => x.classList.toggle('on', x === b)); });
           $('#umAv', box).onclick = () => { close(); this.avatarPicker(); };
+          if ($('#umSync', box)) $('#umSync', box).onclick = () => { close(); this.syncInfo(); };
           $('#umVip', box).onclick = () => { close(); this.vipCodeDialog(); };
           $('#swUser', box).onclick = () => { close(); MA.User.logout(); this.go('login'); };
           if ($('#pwaGo', box)) $('#pwaGo', box).onclick = () => { close(); MA.PWA.install(); };

@@ -977,3 +977,25 @@ button.big-avatar.av-edit:hover, button.big-avatar.av-edit:focus-visible { borde
 
 /* v26: hộp nhập mã VIP */
 .vc-code { font-family: ui-monospace, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; font-size: 1.15rem; }
+
+/* ===== Hiển thị tập trung: nút "Thêm", lưới menu phụ ===== */
+.more-btn { border: 0; background: none; font: inherit; cursor: pointer; color: var(--muted); font-weight: 700; padding: 7px 11px; border-radius: 10px; white-space: nowrap; font-size: .92rem; }
+.more-btn:hover { background: var(--bg2); color: var(--ink); }
+.more-btn.on { background: var(--soft); color: var(--brand-ink); }
+#bottomnav .more-btn { display: grid; justify-items: center; font-size: .68rem; padding: 4px 6px; flex: 1; border-radius: 10px; }
+#bottomnav .more-btn span { font-size: 1.3rem; line-height: 1.2; }
+.more-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+.more-item { display: flex; align-items: center; gap: 10px; padding: 14px; border: 1.5px solid var(--line); border-radius: 14px; background: var(--card); color: var(--ink); text-decoration: none; }
+.more-item:hover { border-color: var(--accent); }
+.more-item span { font-size: 1.6rem; }
+[hidden] { display: none !important; }
+.rc-more { margin-top: 10px; } .rc-more summary { cursor: pointer; color: var(--muted); font-weight: 700; font-size: .85rem; list-style: none; }
+.rc-more summary::-webkit-details-marker { display: none; }
+.quick-row { grid-template-columns: repeat(2, 1fr) !important; }
+.qh-more { position: relative; } .qh-more summary { list-style: none; cursor: pointer; } .qh-more summary::-webkit-details-marker { display: none; }
+.qh-menu { position: absolute; right: 0; top: calc(100% + 4px); z-index: 20; background: var(--card); border: 1.5px solid var(--line); border-radius: 12px; padding: 6px; box-shadow: 0 6px 20px rgba(0,0,0,.15); white-space: nowrap; }
+.help-opts { display: inline-flex; gap: 6px; flex-wrap: wrap; margin-left: 6px; }
+.res-more, .rv-all { margin-top: 14px; } .res-more > summary, .rv-all > summary { cursor: pointer; color: var(--muted); font-weight: 700; padding: 6px 0; }
+.res-more .btn-row { margin-top: 8px; }
+body:not([data-view="home"]):not([data-view="login"]) .footer { display: none; }
+.lg-more, .features-d { margin: 10px 0; } .lg-more > summary, .features-d > summary { cursor: pointer; color: var(--muted); font-weight: 700; }

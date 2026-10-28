@@ -25,7 +25,7 @@
               <label class="fld"><span>Số điện thoại của cha/mẹ <small class="tag good">Khuyên dùng</small></span><input id="lgPhone" type="tel" inputmode="numeric" maxlength="14" placeholder="Ví dụ: 0912 345 678" autocomplete="off">
                 <small class="muted">🔒 Chỉ dùng để nhận diện và đăng nhập lại; được mã hóa, không hiển thị ở bất cứ đâu. Nhiều anh chị em có thể dùng chung một số.</small></label>
               <div class="fld"><span>Con học lớp mấy?</span><div class="seg big" id="lgGrade">${[1, 2, 3, 4, 5, 6].map(g => `<button data-g="${g}" class="${g === grade ? 'on' : ''}">Lớp ${g}</button>`).join('')}</div></div>
-              <div class="fld"><span>Chọn hình đại diện</span><div class="avatars" id="lgAv">${MA.User.AVATARS.map((a, i) => `<button data-a="${a}" class="${i === 0 ? 'on' : ''}">${a}</button>`).join('')}</div></div>
+              <details class="lg-more"><summary>🙂 Chọn hình đại diện (không bắt buộc)</summary><div class="fld"><div class="avatars" id="lgAv">${MA.User.AVATARS.map((a, i) => `<button data-a="${a}" class="${i === 0 ? 'on' : ''}">${a}</button>`).join('')}</div></div></details>
               <button class="btn big block" id="lgGo">Bắt đầu học 🚀</button>
               <div class="btn-row center"><button class="link" id="lgByPhone">📱 Đăng nhập lại bằng số điện thoại cha/mẹ</button></div>
               <p class="login-guide">Lần đầu dùng? <a href="huong-dan.html">📖 Xem hướng dẫn sử dụng</a> (có hình minh họa)</p>
@@ -48,9 +48,9 @@
             </div>
           </div>
         </section>
-        <section class="features">
+        <details class="features-d"><summary>✨ Toán Vui có những gì?</summary><section class="features">
           ${[['📚', 'Học bài', 'Kiến thức trọng tâm, sơ đồ, hình vẽ trực quan, thơ ghi nhớ.'], ['✏️', 'Luyện tập', 'Bộ đề vô hạn từ cơ bản đến nâng cao, tự điều chỉnh độ khó.'], ['💡', 'Gợi ý & lời giải', 'Gợi ý từng bước và lời giải mẫu kèm hình minh họa.'], ['🔁', 'Ôn bài cũ', 'Tự nhắc ôn kiến thức sắp quên, sổ lỗi sai, thẻ ghi nhớ.'], ['🏆', 'Xếp hạng theo lớp', 'Tích XP, lên hạng từ Mầm Non đến Thần Đồng Toán.'], ['👑', 'Tài khoản VIP', 'Mở khóa đề thi học sinh giỏi và bài tập nâng cao do thầy cô biên soạn.']].map(f => `<div class="feat"><span>${f[0]}</span><b>${f[1]}</b><p>${f[2]}</p></div>`).join('')}
-        </section>`;
+        </section></details>`;
       const setTab = (t) => { tab = t; $$('.login-tabs button', app).forEach(b => b.classList.toggle('on', b.dataset.tab === t)); $('#tabStudent', app).hidden = t !== 'student'; $('#tabVip', app).hidden = t !== 'vip'; $('#tabAdmin', app).hidden = t !== 'admin'; };
       $$('.login-tabs button', app).forEach(b => b.onclick = () => setTab(b.dataset.tab)); setTab(tab);
       $$('#lgGrade button', app).forEach(b => b.onclick = () => { grade = +b.dataset.g; $$('#lgGrade button', app).forEach(x => x.classList.toggle('on', x === b)); });
@@ -195,7 +195,7 @@
       app.innerHTML = `
         <section class="home-hero" style="--gc:${g.color}">
           <div class="hh-left">
-            <div class="eyebrow">${g.emoji} ${g.name} · Chương trình GDPT 2018</div>
+            <div class="eyebrow">${g.emoji} ${g.name}</div>
             <h1>${hi}, ${esc(u.name)}! ${MA.U.av(u.avatar)}</h1>
             ${main}
           </div>
@@ -203,23 +203,23 @@
             <div class="rc-top"><span class="rc-icon">${rk.icon}</span><div><small>Hạng ${g.name}</small><b>${rk.name}</b></div><div class="rc-pos">${pos ? '#' + pos : ''}<small>${pos ? 'trên bảng' : ''}</small></div></div>
             <div class="rc-xp">${xp} XP ${rk.next ? `<small>· còn ${rk.next.min - xp} XP để lên ${rk.next.icon} ${rk.next.name}</small>` : '<small>· Hạng cao nhất!</small>'}</div>
             <div class="mbar"><i style="width:${rk.pct}%;background:var(--rc)"></i></div>
-            <div class="rc-stats"><div><b>🔥 ${u.streak.days}</b><small>ngày liên tiếp</small></div><div><b>✅ ${u.stats.correct}</b><small>câu đúng</small></div><div><b>🎯 ${acc}%</b><small>chính xác</small></div></div>
+            <details class="rc-more" ${UI.settings.full ? 'open' : ''}><summary>📊 Thành tích</summary><div class="rc-stats"><div><b>🔥 ${u.streak.days}</b><small>ngày liên tiếp</small></div><div><b>✅ ${u.stats.correct}</b><small>câu đúng</small></div><div><b>🎯 ${acc}%</b><small>chính xác</small></div></div></details>
           </div>
         </section>
 
-        ${(() => { const i = MA.Account.vipInfo(); return i && i.trial && i.hours > 0 && MA.Account.isVip() ? `<section class="card trial-bar"><span>🎁</span><div><b>Con đang dùng thử VIP</b> · còn <b>${i.hours} giờ</b><small class="muted"> (đến ${new Date(i.until).toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' })})</small></div><a class="btn small" href="#/vip">👑 Khám phá VIP</a></section>` : ''; })()}
-        ${(() => { const hw = MA.Content.homework(MA.Account.current(), u).filter(h => !h.done); return hw.length ? `<section class="card hw-card"><h3>📌 Bài tập thầy cô giao (${hw.length})</h3>${hw.slice(0, 3).map(h => `<div class="acc-row"><span><b>${esc(h.title)}</b> · ${h.n} câu${h.due ? ` · hạn ${h.due.split('-').reverse().join('/')}` : ''}</span><a class="btn small" href="#/review/hw/${h.id}">Làm bài →</a></div>`).join('')}</section>` : ''; })()}
+        ${(() => { const i = MA.Account.vipInfo(); return i && i.trial && i.hours > 0 && MA.Account.isVip() && MA.Store.get('hideTrial', '') !== MA.U.today() ? `<section class="card trial-bar"><span>🎁</span><div><b>Con đang dùng thử VIP</b> · còn <b>${i.hours} giờ</b><small class="muted"> (đến ${new Date(i.until).toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' })})</small></div><a class="btn small" href="#/vip">👑 Khám phá VIP</a><button class="btn ghost tiny" data-hide-trial aria-label="Ẩn hôm nay">✕</button></section>` : ''; })()}
+        ${(() => { const hw = MA.Content.homework(MA.Account.current(), u).filter(h => !h.done); return hw.length ? `<section class="card hw-card"><h3>📌 Bài tập thầy cô giao (${hw.length})</h3>${hw.slice(0, 1).map(h => `<div class="acc-row"><span><b>${esc(h.title)}</b> · ${h.n} câu${h.due ? ` · hạn ${h.due.split('-').reverse().join('/')}` : ''}</span><a class="btn small" href="#/review/hw/${h.id}">Làm bài →</a></div>`).join('')}${hw.length > 1 ? `<p class="muted small">Còn ${hw.length - 1} bài tập khác — xong bài này sẽ hiện tiếp.</p>` : ''}</section>` : ''; })()}
         <section class="quick-row">
           <a class="quick ${MA.User.dailyDone() ? 'done' : ''}" href="#/review/daily"><span>🌟</span><b>Thử thách ngày</b><small>${MA.User.dailyDone() ? `✔ ${u.daily[MA.U.today() + '_' + u.grade]}/10 điểm` : '10 câu · +50 XP'}</small></a>
           <a class="quick" href="#/review/mistakes"><span>📒</span><b>Sổ lỗi sai</b><small>${mist ? `${mist} câu cần sửa` : 'Chưa có lỗi 🎉'}</small></a>
-          <a class="quick" href="#/exam"><span>📝</span><b>Kiểm tra</b><small>15 câu · chấm thang 10</small></a>
-          <a class="quick" href="#/timo"><span>🌏</span><b>Luyện thi TIMO</b><small>Song ngữ · 5 phân môn</small></a>
+          ${UI.settings.full ? '<a class="quick" href="#/exam"><span>📝</span><b>Kiểm tra</b><small>15 câu · chấm thang 10</small></a><a class="quick" href="#/timo"><span>🌏</span><b>Luyện thi TIMO</b><small>Song ngữ · 5 phân môn</small></a>' : ''}
         </section>
 
         <section>
-          <div class="sec-head"><h2>📚 Các chủ đề ${g.name}</h2><a href="#/learn">Xem tất cả →</a></div>
-          <div class="topic-grid">${topics.map(t => MA.Views.learn.topicCard(t)).join('')}</div>
+          <div class="sec-head"><h2>📚 Chủ đề ${g.name}</h2><a href="#/learn">Xem tất cả (${topics.length}) →</a></div>
+          <div class="topic-grid">${(next ? [next].concat(topics.filter(t => t.id !== next.id)) : topics).slice(0, UI.settings.full ? 999 : 4).map(t => MA.Views.learn.topicCard(t)).join('')}</div>
         </section>`;
+      const ht = $('[data-hide-trial]', app); if (ht) ht.onclick = () => { MA.Store.set('hideTrial', MA.U.today()); ht.closest('.trial-bar').remove(); };
     }
   };
 })(window.MA);
