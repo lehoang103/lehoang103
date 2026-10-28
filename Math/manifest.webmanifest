@@ -1,0 +1,16 @@
+{
+  "name": "Toán Vui 1–6 · Học toán lớp 1 đến lớp 6",
+  "short_name": "Toán Vui",
+  "description": "Học, luyện, ôn toán lớp 1–6 theo Chương trình GDPT 2018: nhiệm vụ mỗi ngày 15 phút, ôn tập đúng lúc, lời giải chi tiết.",
+  "lang": "vi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fbf7f0",
+  "theme_color": "#f29f3d",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

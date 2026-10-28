@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hướng dẫn sử dụng – Toán Vui 1–6</title>
+<meta name="description" content="Hướng dẫn sử dụng Toán Vui 1–6: đăng nhập, học bài, luyện tập, ôn tập, kiểm tra, TIMO, báo cáo cho cha mẹ.">
+<link rel="icon" href="assets/icon-192.png">
+<style>
+@font-face { font-family: 'Nunito'; font-style: normal; font-display: swap; font-weight: 200 1000; src: url(assets/fonts/nunito-vietnamese-wght-normal.woff2) format('woff2'); unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB; }
+@font-face { font-family: 'Nunito'; font-style: normal; font-display: swap; font-weight: 200 1000; src: url(assets/fonts/nunito-latin-ext-wght-normal.woff2) format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'Nunito'; font-style: normal; font-display: swap; font-weight: 200 1000; src: url(assets/fonts/nunito-latin-wght-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+
+:root {
+  --bg: #fbf7f0; --bg2: #f4efe5; --card: #fff; --ink: #1f2633; --muted: #6a7282; --line: #e8e1d4; --soft: #fff5e6;
+  --brand: #f29f3d; --brand-2: #e8852a; --brand-ink: #6b3a00; --good: #2fa36b; --mark: #e5383b;
+  --shadow: 0 1px 2px rgba(40,30,10,.06), 0 6px 20px rgba(40,30,10,.07);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #13151b; --bg2: #191c24; --card: #1e212b; --ink: #eef0f5; --muted: #9ba3b4; --line: #2e3340; --soft: #2a2620;
+    --brand-ink: #ffd09a; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #13151b; --bg2: #191c24; --card: #1e212b; --ink: #eef0f5; --muted: #9ba3b4; --line: #2e3340; --soft: #2a2620;
+  --brand-ink: #ffd09a; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25); color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 Nunito, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust: 100%; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: #3b6fd0; }
+b, strong { font-weight: 800; }
+
+/* Thanh trên */
+.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--card) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+@supports not (background: color-mix(in srgb, red, blue)) { .top { background: var(--card); } }
+.top-in { max-width: 980px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 12px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-weight: 900; font-size: 18px; }
+.logo img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--brand); }
+.logo span b { color: var(--brand-2); }
+.top .btn { margin-left: auto; }
+
+.btn { display: inline-block; background: var(--brand); color: #3a1d00; font-weight: 800; text-decoration: none; padding: 9px 18px; border-radius: 12px; box-shadow: 0 3px 0 var(--brand-2); white-space: nowrap; }
+.btn:hover { filter: brightness(1.05); }
+.btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--brand-2); }
+
+main { max-width: 980px; margin: 0 auto; padding: 0 16px 48px; }
+
+/* Đầu trang */
+.hero { margin: 28px 0 20px; padding: 28px; border-radius: 20px; background: linear-gradient(135deg, var(--soft), var(--bg2)); border: 1px solid var(--line); display: flex; gap: 24px; align-items: center; }
+.hero img { width: 112px; height: 112px; border-radius: 50%; flex: none; box-shadow: var(--shadow); }
+.hero h1 { margin: 0 0 6px; font-size: clamp(26px, 4vw, 36px); line-height: 1.2; font-weight: 900; }
+.hero p { margin: 0; color: var(--muted); }
+.hero .daily { margin-top: 14px; display: inline-block; padding: 8px 14px; border-radius: 12px; background: var(--card); border: 1px dashed var(--brand); color: var(--ink); }
+
+/* Mục lục */
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 28px; padding: 0; list-style: none; }
+.toc a { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px 7px 8px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); text-decoration: none; color: var(--ink); font-weight: 700; font-size: 15px; box-shadow: var(--shadow); }
+.toc a:hover { border-color: var(--brand); }
+.toc .n { width: 24px; height: 24px; border-radius: 50%; background: var(--brand); color: #3a1d00; display: grid; place-items: center; font-weight: 900; font-size: 13px; }
+
+/* Mục */
+section { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 26px 28px; margin: 0 0 22px; box-shadow: var(--shadow); }
+section > h2 { display: flex; align-items: center; gap: 12px; margin: 0 0 6px; font-size: clamp(21px, 3vw, 26px); font-weight: 900; line-height: 1.25; }
+section > h2 .n { flex: none; width: 38px; height: 38px; border-radius: 12px; background: var(--brand); color: #3a1d00; display: grid; place-items: center; font-size: 20px; }
+.lead { color: var(--muted); margin: 0 0 16px; }
+h3 { font-size: 18px; font-weight: 900; margin: 22px 0 8px; }
+
+/* Ảnh + chú thích số */
+.shot { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 22px; align-items: start; margin: 14px 0 6px; }
+.shot.narrow { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); }
+.shot.full { grid-template-columns: 1fr; }
+figure { margin: 0; }
+figure img { border-radius: 14px; border: 1px solid var(--line); background: #fbf7f0; }
+figcaption { font-size: 14px; color: var(--muted); margin-top: 6px; text-align: center; }
+
+ol.marks { list-style: none; counter-reset: m; margin: 0; padding: 0; }
+ol.marks li { counter-increment: m; position: relative; padding: 4px 0 10px 42px; }
+ol.marks li::before { content: counter(m); position: absolute; left: 0; top: 2px; width: 30px; height: 30px; border-radius: 50%; background: var(--mark); color: #fff; font-weight: 900; font-size: 15px; display: grid; place-items: center; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,.25); }
+ol.marks.abc li::before { content: counter(m, upper-alpha); border-radius: 8px; }
+
+.tip { margin: 16px 0 0; padding: 12px 16px; border-radius: 12px; background: var(--soft); border-left: 4px solid var(--brand); }
+
+/* Bước luyện tập */
+.step { display: inline-block; font-size: 13px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; color: var(--brand-ink); background: var(--soft); border: 1px solid var(--brand); padding: 2px 10px; border-radius: 999px; margin-right: 6px; }
+
+/* Bảng */
+.tbl { width: 100%; border-collapse: collapse; margin: 6px 0 0; font-size: 16px; }
+.tbl th, .tbl td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl th { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.tbl td:first-child { width: 44px; }
+.tbl .k { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--mark); color: #fff; font-weight: 900; font-size: 14px; }
+.tbl td b { white-space: nowrap; }
+
+ul.tips { padding-left: 0; list-style: none; margin: 0; }
+ul.tips li { padding: 10px 0; border-bottom: 1px dashed var(--line); }
+ul.tips li:last-child { border-bottom: 0; }
+ul.tips li b:first-child { display: block; }
+
+.vip { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 8px 0 0; padding: 0; list-style: none; }
+.vip li { padding: 12px 14px; border-radius: 12px; background: var(--bg2); border: 1px solid var(--line); }
+
+.cta { text-align: center; padding: 30px 16px; }
+.cta p { color: var(--muted); margin: 0 0 14px; }
+.cta .btn { font-size: 19px; padding: 12px 28px; }
+footer { text-align: center; color: var(--muted); font-size: 14px; padding: 0 16px 32px; }
+
+@media (max-width: 760px) {
+  .hero { flex-direction: column; text-align: center; padding: 22px 18px; gap: 14px; }
+  .hero img { width: 88px; height: 88px; }
+  section { padding: 20px 16px; border-radius: 16px; }
+  .shot, .shot.narrow { grid-template-columns: 1fr; gap: 14px; }
+  .shot.narrow figure { max-width: 420px; margin: 0 auto; }
+  .vip { grid-template-columns: 1fr; }
+  .top .btn { padding: 7px 12px; font-size: 15px; }
+  .logo span { display: none; }
+  .tbl td b { white-space: normal; }
+}
+@media print {
+  .top, .cta, .toc { display: none; }
+  body { background: #fff; }
+  section { box-shadow: none; break-inside: avoid-page; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="./"><img src="assets/mascot.jpg" alt=""><span>Toán Vui <b>1–6</b> · Hướng dẫn</span></a>
+    <a class="btn" href="./">Vào học ngay</a>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <img src="assets/mascot.jpg" alt="Cú Toán Vui">
+    <div>
+      <h1>Hướng dẫn sử dụng Toán Vui 1–6</h1>
+      <p>Ứng dụng học toán lớp 1–6 bám sát SGK Kết nối tri thức. Học trên máy tính, máy tính bảng và điện thoại — không cần cài đặt.</p>
+      <div class="daily">⏱ Mỗi ngày chỉ cần <b>15 phút</b>: bấm <b>Nhiệm vụ hôm nay</b> trên trang chủ.</div>
+    </div>
+  </div>
+
+  <ul class="toc" aria-label="Mục lục">
+    <li><a href="#bat-dau"><span class="n">1</span>Bắt đầu</a></li>
+    <li><a href="#trang-chu"><span class="n">2</span>Trang chủ</a></li>
+    <li><a href="#hoc-bai"><span class="n">3</span>Học bài</a></li>
+    <li><a href="#luyen-tap"><span class="n">4</span>Luyện tập</a></li>
+    <li><a href="#cac-muc"><span class="n">5</span>Các mục khác</a></li>
+    <li><a href="#cha-me"><span class="n">6</span>Cho cha mẹ</a></li>
+    <li><a href="#dien-thoai"><span class="n">7</span>Điện thoại & mẹo</a></li>
+  </ul>
+
+  <!-- 1 -->
+  <section id="bat-dau">
+    <h2><span class="n">1</span>Bắt đầu: vào học trong 30 giây</h2>
+    <p class="lead">Không cần đăng ký. Mở trang web, điền 4 ô rồi bấm <b>Bắt đầu học</b>.</p>
+    <div class="shot narrow">
+      <figure><img src="assets/huong-dan/01-dang-nhap.jpg" width="642" height="960" alt="Màn hình đăng nhập có đánh số 1 đến 6" loading="lazy"></figure>
+      <ol class="marks">
+        <li><b>Tên của con</b> — tên hiện trên bảng xếp hạng.</li>
+        <li><b>Số điện thoại cha/mẹ</b> — để đăng nhập lại và giữ kết quả. Anh chị em dùng chung một số được. Đăng ký bằng SĐT được <b>dùng thử VIP 1 ngày</b>.</li>
+        <li><b>Chọn lớp</b> (1–6). Đổi lớp sau này bằng nút lớp ở góc trên trái.</li>
+        <li><b>Chọn hình đại diện.</b></li>
+        <li>Bấm <b>Bắt đầu học</b>.</li>
+        <li>Tài khoản VIP: chọn tab <b>VIP</b>, đăng nhập bằng SĐT + mật khẩu.</li>
+      </ol>
+    </div>
+    <p class="tip">Lần sau, bấm <b>Đăng nhập lại bằng số điện thoại cha/mẹ</b> để học tiếp đúng hồ sơ cũ.</p>
+  </section>
+
+  <!-- 2 -->
+  <section id="trang-chu">
+    <h2><span class="n">2</span>Trang chủ: mỗi ngày bấm “Nhiệm vụ hôm nay”</h2>
+    <p class="lead">Ứng dụng tự xếp khoảng 15 phút gồm ôn bài sắp quên, sửa lỗi sai và học bài mới (+30 XP).</p>
+    <figure><img src="assets/huong-dan/02-trang-chu.jpg" width="1280" height="720" alt="Trang chủ có đánh số 1 đến 7" loading="lazy"></figure>
+    <table class="tbl">
+      <thead><tr><th>Số</th><th>Khu vực</th><th>Dùng để</th></tr></thead>
+      <tbody>
+        <tr><td><span class="k">1</span></td><td><b>Nút lớp</b></td><td>Đổi lớp 1–6 bất cứ lúc nào</td></tr>
+        <tr><td><span class="k">2</span></td><td><b>Thanh menu</b></td><td>Học bài · Luyện tập · Ôn tập · Kiểm tra · TIMO · Xếp hạng · VIP</td></tr>
+        <tr><td><span class="k">3</span></td><td><b>Hạng & XP</b></td><td>Điểm kinh nghiệm và hạng hiện tại</td></tr>
+        <tr><td><span class="k">4</span></td><td><b>Ảnh đại diện</b></td><td>Menu cá nhân: âm thanh, cỡ chữ, hồ sơ, báo cáo tuần, đổi người học</td></tr>
+        <tr><td><span class="k">5</span></td><td><b>Nhiệm vụ hôm nay</b></td><td>Bài học ~15 phút do ứng dụng tự chọn</td></tr>
+        <tr><td><span class="k">6</span></td><td><b>Lối tắt</b></td><td>Thử thách ngày (+50 XP) · Sổ lỗi sai · Kiểm tra · TIMO</td></tr>
+        <tr><td><span class="k">7</span></td><td><b>Thẻ chủ đề</b></td><td>Mở thẳng một chủ đề; thanh màu = mức thành thạo</td></tr>
+      </tbody>
+    </table>
+    <p class="tip">Lần đầu học một lớp, trang chủ gợi ý <b>Làm bài đầu vào</b> (15 câu) để biết con nên bắt đầu từ đâu.</p>
+  </section>
+
+  <!-- 3 -->
+  <section id="hoc-bai">
+    <h2><span class="n">3</span>Học bài: đi theo bản đồ</h2>
+    <p class="lead">Các chủ đề là những “trạm” xếp theo đúng thứ tự SGK. Học từ trái sang phải; mỗi trạm có 3 sao (50% · 70% · 85% thành thạo).</p>
+    <div class="shot">
+      <figure><img src="assets/huong-dan/03-ban-do.jpg" width="1280" height="1000" alt="Bản đồ học tập có đánh số 1 đến 3" loading="lazy"></figure>
+      <ol class="marks">
+        <li>Chuyển giữa <b>Bản đồ</b> và <b>Danh sách</b>.</li>
+        <li><b>Ôn lý thuyết theo SGK</b>: cần nhớ, công thức, thẻ hỏi – đáp, kiểm tra nhanh theo từng bài trong sách.</li>
+        <li>Trạm con đang học. Bấm một trạm bất kỳ để mở bài học.</li>
+      </ol>
+    </div>
+    <h3>Trong mỗi bài học</h3>
+    <div class="shot">
+      <figure><img src="assets/huong-dan/04-bai-hoc.jpg" width="1280" height="700" alt="Trang bài học có đánh số 1 đến 3" loading="lazy"></figure>
+      <ol class="marks">
+        <li><b>Luyện tập</b> ngay các dạng bài của chủ đề.</li>
+        <li><b>Cô đọc bài</b> — nghe đọc to nội dung (hợp với lớp 1–2).</li>
+        <li>Mục lục bài: Ôn bài cũ → Kiến thức → Theo SGK → Ghi nhớ → Lỗi sai → Ví dụ → Thử ngay → Dạng bài.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="luyen-tap">
+    <h2><span class="n">4</span>Luyện tập: 3 bước</h2>
+    <p class="lead">Câu hỏi được tạo mới mỗi lần — luyện bao nhiêu cũng không hết.</p>
+
+    <h3><span class="step">Bước 1</span>Chọn bài</h3>
+    <div class="shot">
+      <figure><img src="assets/huong-dan/05-chon-bai.jpg" width="1280" height="740" alt="Chọn bài luyện tập có đánh số 1 đến 5" loading="lazy"></figure>
+      <ol class="marks">
+        <li>Chọn một hoặc nhiều chủ đề (số % = mức thành thạo).</li>
+        <li>Mức độ: <b>Thích ứng</b> (nên dùng — tự tăng độ khó khi con làm đúng liên tiếp), Cơ bản, Vận dụng, Nâng cao, Trộn.</li>
+        <li>Số câu: 5 – 20.</li>
+        <li><b>Thong thả</b> hoặc <b>Tốc độ</b> (30 giây/câu, thưởng XP).</li>
+        <li>Bấm <b>Bắt đầu luyện tập</b>.</li>
+      </ol>
+    </div>
+
+    <h3><span class="step">Bước 2</span>Làm bài</h3>
+    <p class="lead">Chọn đáp án hoặc gõ số vào ô.</p>
+    <div class="shot">
+      <figure><img src="assets/huong-dan/06-cau-hoi.jpg" width="920" height="450" alt="Màn hình câu hỏi có đánh số 1 đến 5" loading="lazy"></figure>
+      <ol class="marks">
+        <li><b>Gợi ý</b> — nhắc hướng làm, chưa lộ đáp án.</li>
+        <li><b>Xem lời giải</b> khi con bí.</li>
+        <li><b>Câu này khó</b> — gắn cờ để ôn lại sau.</li>
+        <li><b>Cô đọc đề</b>. Nút bên cạnh mở <b>bảng nháp</b> để đặt tính.</li>
+        <li><b>Toàn màn hình</b> — ẩn menu cho con tập trung (Esc để thoát).</li>
+      </ol>
+    </div>
+
+    <h3><span class="step">Bước 3</span>Xem lời giải và kết quả</h3>
+    <div class="shot">
+      <figure><img src="assets/huong-dan/07-loi-giai.jpg" width="920" height="740" alt="Lời giải chi tiết khi con làm sai" loading="lazy"><figcaption>Làm sai: đáp án đúng, lỗi con hay mắc và cách giải từng bước</figcaption></figure>
+      <figure><img src="assets/huong-dan/08-ket-qua.jpg" width="940" height="640" alt="Màn hình kết quả cuối bài" loading="lazy"><figcaption>Hết bài: điểm thang 10, XP, bài nên ôn lại</figcaption></figure>
+    </div>
+    <p class="tip">Ở màn kết quả, bấm <b>Sửa lỗi sai</b> để làm lại ngay câu sai, hoặc <b>Gắn cờ tất cả câu sai</b> để ôn sau.</p>
+  </section>
+
+  <!-- 5 -->
+  <section id="cac-muc">
+    <h2><span class="n">5</span>Các mục khác</h2>
+    <figure><img src="assets/huong-dan/09-cac-muc-khac.jpg" width="1300" height="1460" alt="Ôn tập, Kiểm tra, TIMO, Ôn lý thuyết SGK, Xếp hạng, Phiếu in" loading="lazy"></figure>
+    <table class="tbl">
+      <thead><tr><th>Ảnh</th><th>Mục</th><th>Dùng khi nào</th></tr></thead>
+      <tbody>
+        <tr><td><span class="k">A</span></td><td><b>Ôn tập</b></td><td>Ôn thông minh (bài sắp quên), Thử thách hằng ngày, Sổ lỗi sai, Cờ của con, Thẻ ghi nhớ công thức</td></tr>
+        <tr><td><span class="k">B</span></td><td><b>Kiểm tra</b></td><td>Đề có giờ: 15 phút (10 câu) hoặc 1 tiết (20 câu), chấm thang 10. Từ 8 điểm được giấy khen</td></tr>
+        <tr><td><span class="k">C</span></td><td><b>TIMO</b></td><td>Luyện thi TIMO theo 5 phân môn; chọn Tiếng Việt, Song ngữ hoặc English</td></tr>
+        <tr><td><span class="k">D</span></td><td><b>Lý thuyết SGK</b></td><td>Ôn từng bài theo mục lục sách; chọn Lớp và Tập một / Tập hai</td></tr>
+        <tr><td><span class="k">E</span></td><td><b>Xếp hạng</b></td><td>So XP với các bạn cùng lớp; 8 bậc từ Mầm Non đến Thần Đồng Toán</td></tr>
+        <tr><td><span class="k">F</span></td><td><b>Phiếu in</b></td><td>Tạo phiếu bài tập A4 kèm đáp án để con làm trên giấy</td></tr>
+      </tbody>
+    </table>
+    <p class="tip">XP khi làm đúng: Cơ bản <b>+10</b>, Vận dụng <b>+15</b>, Nâng cao <b>+25</b>; thưởng thêm khi làm nhanh, đúng liên tiếp và hoàn thành thử thách ngày.</p>
+  </section>
+
+  <!-- 6 -->
+  <section id="cha-me">
+    <h2><span class="n">6</span>Dành cho cha mẹ</h2>
+    <h3>Báo cáo tuần</h3>
+    <div class="shot">
+      <figure><img src="assets/huong-dan/10-bao-cao-tuan.jpg" width="1280" height="800" alt="Báo cáo tuần cho cha mẹ" loading="lazy"></figure>
+      <div>
+        <p>Bấm <b>ảnh đại diện</b> của con → <b>Báo cáo tuần</b>.</p>
+        <p>Xem số ngày học, số câu, tỉ lệ đúng, phần <b>đã vững</b> và phần <b>cần giúp con</b> (có nút luyện ngay).</p>
+        <p>Sao chép gửi Zalo, chia sẻ hoặc in.</p>
+      </div>
+    </div>
+    <h3>Tài khoản VIP</h3>
+    <p class="lead">Hiệu lực 1 năm; tối đa 2 hồ sơ anh chị em dùng chung SĐT + mật khẩu.</p>
+    <ul class="vip">
+      <li>Đề thi học sinh giỏi, thi thử TIMO 3 vòng và mọi kì thi</li>
+      <li>Luyện chuyên sâu nâng cao; luyện bổ trợ 8 câu cho dạng con đã gắn cờ</li>
+      <li>Báo cáo học tập chi tiết 7/30/90 ngày, xuất CSV, in báo cáo</li>
+      <li>Tư vấn sửa lỗi sai và lộ trình 7 ngày</li>
+    </ul>
+    <p class="tip"><b>Kích hoạt:</b> ảnh đại diện → <b>Hồ sơ</b> → <b>Tài khoản</b> → nhập mã VIP (dạng VIP-XXXXX-XXXXX do thầy cô cấp) → đặt mật khẩu từ 6 kí tự. Quên mật khẩu: liên hệ thầy cô để đặt lại.</p>
+  </section>
+
+  <!-- 7 -->
+  <section id="dien-thoai">
+    <h2><span class="n">7</span>Trên điện thoại và mẹo nhỏ</h2>
+    <div class="shot narrow">
+      <figure><img src="assets/huong-dan/11-dien-thoai.jpg" width="810" height="864" alt="Giao diện trên điện thoại" loading="lazy"><figcaption>Trên điện thoại, menu nằm ở thanh dưới cùng</figcaption></figure>
+      <ul class="tips">
+        <li><b>Cài như ứng dụng</b>Ảnh đại diện → Cài ứng dụng (hoặc menu trình duyệt → Thêm vào Màn hình chính). Mở được cả khi mất mạng.</li>
+        <li><b>Cô không đọc được tiếng Việt</b>Máy tính: mở bằng Microsoft Edge. Android/iPhone: cài giọng Tiếng Việt trong Cài đặt (hướng dẫn có ở menu cá nhân → Giọng cô đọc).</li>
+        <li><b>Chữ nhỏ quá</b>Menu cá nhân → Cỡ chữ → Lớn.</li>
+        <li><b>Muốn con tự gõ đáp số</b>Bật “Tự nhập đáp số” trong menu cá nhân.</li>
+        <li><b>Nhiều con dùng chung máy</b>Menu cá nhân → Đổi người học.</li>
+        <li><b>Học tiếp trên máy khác</b>Đăng nhập lại bằng đúng SĐT cha/mẹ đã dùng.</li>
+        <li><b>Trang lỗi hoặc trắng</b>Bấm nút “Xoá bộ nhớ tạm &amp; tải lại” khi ứng dụng hiện ra.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="cta">
+    <p>Sẵn sàng rồi! Chúc con học toán thật vui.</p>
+    <a class="btn" href="./">Vào học ngay →</a>
+  </div>
+</main>
+
+<footer>Toán Vui 1–6 · Bám sát Chương trình GDPT 2018 · SGK Kết nối tri thức với cuộc sống</footer>
+</body>
+</html>

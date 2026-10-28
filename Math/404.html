@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><title>Toán Vui</title>
+<script>
+  /* Hosting chưa hỗ trợ đường dẫn gọn: chuyển  /thu-muc/learn/abc  →  /thu-muc/#/learn/abc  (trang chính sẽ tự đổi lại) */
+  (function () {
+    var R = ['home', 'learn', 'practice', 'review', 'exam', 'worksheet', 'rank', 'vip', 'admin', 'login', 'week'];
+    var s = location.pathname.split('/');
+    for (var i = 1; i < s.length; i++) if (R.indexOf(s[i]) >= 0) { location.replace(s.slice(0, i).join('/') + '/#/' + s.slice(i).join('/')); return; }
+    document.addEventListener('DOMContentLoaded', function () { document.body.innerHTML = '<p style="font-family:sans-serif;padding:24px">Không tìm thấy trang. <a href="./">Về trang chủ Toán Vui</a></p>'; });
+  })();
+</script></head><body></body></html>

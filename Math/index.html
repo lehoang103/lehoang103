@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-kk44bog2khm+vM/o4pazvvK9MsklgxShsiy18tw992k=' 'sha256-gV1wBwsfpCefeFG4I91N8GhRO1f+X5R/m08Murpv2Uc=' https://*.googletagmanager.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com; media-src 'self' data: blob:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Toán Vui 1–6 · Học, luyện, ôn toán lớp 1 đến lớp 6</title>
+  <meta name="description" content="Ứng dụng học toán lớp 1 đến lớp 6: bài học trực quan, bộ đề vô hạn từ cơ bản đến nâng cao, gợi ý và lời giải chi tiết, ôn tập thông minh, xếp hạng theo lớp.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦉</text></svg>">
+  <script>
+    /* Xác định thư mục gốc của website để dùng đường dẫn gọn (/learn thay vì /#/learn) */
+    (function () {
+      var R = ['home', 'learn', 'practice', 'review', 'exam', 'worksheet', 'rank', 'vip', 'admin', 'login', 'week', 'timo', 'theory'];
+      var p = location.pathname, b = null;
+      if (/^https?:$/.test(location.protocol)) {
+        var s = p.split('/');
+        for (var i = 1; i < s.length; i++) if (R.indexOf(s[i]) >= 0) { b = s.slice(0, i).join('/') + '/'; break; }
+        if (b === null) b = p.replace(/[^\/]*$/, '');
+        document.write('<base href="' + b.replace(/"/g, '') + '">');
+      }
+      window.MA_BASE = b;
+    })();
+  </script>
+  <!-- Google Analytics 4: cấu hình ở js/core/ga.js -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J1JRGBH3DJ"></script>
+  <script src="js/core/ga.js?v=27"></script>
+  <link rel="preload" href="assets/fonts/nunito-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/nunito-vietnamese-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=27">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#f29f3d">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body>
+  <header id="topbar"></header>
+  <main id="app" class="view"><div class="card">Đang tải… Nếu trang không hiện, hãy bật JavaScript cho trình duyệt.</div></main>
+  <nav id="bottomnav" aria-label="Điều hướng"></nav>
+  <footer class="footer no-print"><a href="huong-dan.html">📖 Hướng dẫn sử dụng</a> · Toán Vui · Bám sát Chương trình GDPT 2018 · Dữ liệu học tập lưu ngay trên trình duyệt của bạn.<br>Công ty cổ phần giáo dục và đào tạo POL quốc tế tài trợ toàn bộ chi phí liên quan.</footer>
+  <div id="toasts" aria-live="polite"></div>
+  <div id="printArea"></div>
+
+  <!-- 0. Tự kiểm tra khi mở trang (phải đứng đầu) -->
+  <script src="js/core/boot.js?v=27"></script>
+  <!-- 1. Lõi: tiện ích, lưu trữ, âm thanh, người dùng, hình minh họa -->
+  <script src="js/core/utils.js?v=27"></script>
+  <script src="js/core/storage.js?v=27"></script>
+  <script src="js/core/sound.js?v=27"></script>
+  <script src="js/core/user.js?v=27"></script>
+  <script src="js/core/account.js?v=27"></script>
+  <script src="js/core/content.js?v=27"></script>
+  <script src="js/core/bots.js?v=27"></script>
+  <script src="js/core/analytics.js?v=27"></script>
+  <script src="js/core/tutor.js?v=27"></script>
+  <script src="js/core/visuals.js?v=27"></script>
+  <!-- 1b. File cấu hình (quản trị có thể chỉnh / chép đè) -->
+  <script src="js/config/accounts-config.js?v=27"></script>
+  <script src="js/config/content-config.js?v=27"></script>
+  <script src="js/config/sync-config.js?v=27"></script>
+  <script src="js/core/sync.js?v=27"></script>
+  <script src="js/core/nav.js?v=27"></script>
+  <script src="js/core/pwa.js?v=27"></script>
+  <!-- 2. Kho kiến thức & bộ câu hỏi theo lớp -->
+  <script src="js/data/registry.js?v=27"></script>
+  <script src="js/data/grade1.js?v=27"></script>
+  <script src="js/data/grade2.js?v=27"></script>
+  <script src="js/data/grade2-more.js?v=27"></script>
+  <script src="js/data/grade2-hsg.js?v=27"></script>
+  <script src="js/data/grade2-tangcuong.js?v=27"></script>
+  <script src="js/data/grade3.js?v=27"></script>
+  <script src="js/data/grade4.js?v=27"></script>
+  <script src="js/data/grade5.js?v=27"></script>
+  <script src="js/data/grade6.js?v=27"></script>
+  <script src="js/data/grade6-more.js?v=27"></script>
+  <script src="js/data/grade6-hk2.js?v=27"></script>
+  <script src="js/data/theory-core.js?v=27"></script>
+  <script src="js/data/grade6-lythuyet.js?v=27"></script>
+  <script src="js/data/grade6-lythuyet-t2.js?v=27"></script>
+  <script src="js/data/grade1-sgk.js?v=27"></script>
+  <script src="js/data/grade2-sgk.js?v=27"></script>
+  <script src="js/data/grade3-sgk.js?v=27"></script>
+  <script src="js/data/grade4-sgk.js?v=27"></script>
+  <script src="js/data/grade5-sgk.js?v=27"></script>
+  <script src="js/data/interactive.js?v=27"></script>
+  <script src="js/data/curriculum.js?v=27"></script>
+  <!-- 2b. Luyện thi TIMO (khu riêng, không hiện trong bản đồ SGK) -->
+  <script src="js/data/timo-core.js?v=27"></script>
+  <script src="js/data/timo-g2.js?v=27"></script>
+  <script src="js/data/timo-g2-de.js?v=27"></script>
+  <script src="js/data/timo-bank.js?v=27"></script>
+  <script src="js/data/timo-bank2.js?v=27"></script>
+  <script src="js/data/timo-grades.js?v=27"></script>
+  <!-- 3. Giao diện -->
+  <script src="js/ui/core.js?v=27"></script>
+  <script src="js/ui/charts.js?v=27"></script>
+  <script src="js/ui/quiz.js?v=27"></script>
+  <script src="js/ui/views-home.js?v=27"></script>
+  <script src="js/ui/views-learn.js?v=27"></script>
+  <script src="js/ui/views-practice.js?v=27"></script>
+  <script src="js/ui/views-tools.js?v=27"></script>
+  <script src="js/ui/views-vip.js?v=27"></script>
+  <script src="js/ui/views-timo.js?v=27"></script>
+  <script src="js/ui/views-theory.js?v=27"></script>
+  <script src="js/ui/report.js?v=27"></script>
+  <script src="js/ui/views-admin.js?v=27"></script>
+</body>
+</html>
